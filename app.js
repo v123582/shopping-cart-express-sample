@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const exphbs  = require('express-handlebars');
 const session = require('express-session');
+const methodOverride = require('method-override');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,6 +24,7 @@ app.engine('.hbs', exphbs({
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
