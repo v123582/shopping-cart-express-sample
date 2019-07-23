@@ -53,7 +53,7 @@
 - 管理訂單頁
 - 修改訂單頁
 
-## Implement
+## Implement: phase1
 
 1. 成立專案
 
@@ -125,3 +125,9 @@ $ sequelize db:seed:all
 
 10. 實作訂單成立通知信
 	* 訂單成立後，Customer 會收到系統寄發的 e-mail 通知
+
+## Implement: phase2
+
+1. 準備付款頁面
+	* /order/:id/payment
+	* /spgateway/callback
