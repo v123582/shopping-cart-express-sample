@@ -135,3 +135,9 @@ $ sequelize db:seed:all
 	* getTradeInfo - data
 	* getTradeInfo - mpg_aes_encrypt, mpg_sha_encrypt
 	* getTradeInfo - tradeInfo
+3. 串接金流 (2): POST /spgateway/callback
+	* /spgateway/callback?from=NotifyURL
+	* spgatewayCallback: TradeInfo
+	* spgatewayCallback: create_mpg_aes_decrypt
+	* spgatewayCallback: data
+	* /spgateway/callback?from=ReturnURL

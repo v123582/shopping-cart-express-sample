@@ -36,6 +36,15 @@ function create_mpg_aes_encrypt(TradeInfo) {
     return enc + encrypt.final("hex");
 }
 
+function create_mpg_aes_decrypt(TradeInfo) {
+    let decrypt = crypto.createDecipheriv("aes256", HashKey, HashIV);
+    decrypt.setAutoPadding(false);
+    let text = decrypt.update(TradeInfo, "hex", "utf8");
+    let plainText = text + decrypt.final("utf8");
+    let result = plainText.replace(/[\x00-\x20]+/g, "");
+    return result;
+}
+
 function create_mpg_sha_encrypt(TradeInfo) {
     
     let sha = crypto.createHash("sha256");
@@ -164,7 +173,12 @@ let orderController = {
     
     return Order.findByPk(req.params.id, {}).then(order => {
       const tradeInfo = getTradeInfo(order.amount, '產品名稱',  'v123582@gmail.com')
-      return res.render('payment', {order, tradeInfo})
+      order.update({
+        ...req.body,
+        sn: tradeInfo.MerchantOrderNo,
+      }).then(order => {
+        res.render('payment', {order, tradeInfo})
+      })
     })
   },
   spgatewayCallback: (req, res) => {
@@ -173,8 +187,25 @@ let orderController = {
     console.log(req.query)
     console.log(req.body)
     console.log('==========')
+
+    console.log('===== spgatewayCallback: TradeInfo =====')
+    console.log(req.body.TradeInfo)
     
-    return res.redirect('/orders')
+
+    const data = JSON.parse(create_mpg_aes_decrypt(req.body.TradeInfo))
+    
+    console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
+    console.log(data)
+    
+    return Order.findAll({where: {sn: data['Result']['MerchantOrderNo']}}).then(orders => {
+      orders[0].update({
+        ...req.body,
+        payment_status: 1,
+      }).then(order => {
+        return res.redirect('/orders')
+      })
+    })
+
   }
 }
 
