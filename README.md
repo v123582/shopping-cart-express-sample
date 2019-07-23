@@ -128,6 +128,10 @@ $ sequelize db:seed:all
 
 ## Implement: phase2
 
-1. 準備付款頁面
+1. 準備付款頁面: GET /order/:id/payment、POST /spgateway/callback
 	* /order/:id/payment
 	* /spgateway/callback
+2. 串接金流 (1): GET /order/:id/payment
+	* getTradeInfo - data
+	* getTradeInfo - mpg_aes_encrypt, mpg_sha_encrypt
+	* getTradeInfo - tradeInfo
