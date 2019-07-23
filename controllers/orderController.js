@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const crypto = require("crypto")
 const nodemailer = require('nodemailer')
 const db = require('../models')
@@ -13,10 +15,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const URL = ''
-const MerchantID = ''
-const HashKey = ''
-const HashIV = ''
+const URL = process.env.URL
+const MerchantID = process.env.MERCHANT_ID
+const HashKey = process.env.HASH_KEY
+const HashIV = process.env.HASH_IV
 const PayGateWay = "https://ccore.spgateway.com/MPG/mpg_gateway"
 const ReturnURL = URL+"/spgateway/callback?from=ReturnURL"
 const NotifyURL = URL+"/spgateway/callback?from=NotifyURL"
